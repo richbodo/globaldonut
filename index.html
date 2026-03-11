@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Global Donut 🍩</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Righteous&family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Edu+AU+VIC+WA+NT+Pre:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --cream:    #F0E6CE;
+      --gold:     #E8B84B;
+      --green-dk: #1F4020;
+      --green-md: #3A7D44;
+      --green-lt: #7DBF6E;
+      --caramel:  #C17B2A;
+      --chocolate:#5C2C0A;
+      --red:      #C63D2F;
+      --ink:      #1A1208;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--green-dk);
+      color: var(--cream);
+      font-family: 'Courier Prime', monospace;
+      overflow-x: hidden;
+    }
+
+    /* ── GRAIN OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 999; pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      opacity: 0.35;
+    }
+
+    /* ── HEADER / NEON SIGN ── */
+    header {
+      position: relative;
+      text-align: center;
+      padding: 3rem 1rem 0;
+      overflow: hidden;
+    }
+
+    .demo-banner {
+      display: block;
+      width: 100%;
+      background: var(--chocolate);
+      color: var(--cream);
+      font-family: 'Courier Prime', monospace;
+      font-size: 0.88rem;
+      letter-spacing: 0.14em;
+      text-align: center;
+      padding: 0.5rem 1rem;
+      border-top: 2px dashed var(--caramel);
+      border-bottom: 2px dashed var(--caramel);
+      margin: 0.8rem 0;
+      box-sizing: border-box;
+    }
+
+    .vine-bar {
+      width: 100%;
+      height: 28px;
+      background: var(--green-md);
+      display: flex; align-items: center; justify-content: center;
+      gap: 0.6rem;
+      font-size: 1.1rem;
+      letter-spacing: 0.1em;
+      border-bottom: 3px solid var(--green-lt);
+      position: relative;
+    }
+    .vine-bar span { opacity: 0.85; }
+
+    .neon-sign {
+      display: inline-block;
+      font-family: 'Righteous', sans-serif;
+      font-size: clamp(3rem, 10vw, 7rem);
+      color: var(--gold);
+      text-shadow: 0 0 4px #fff4, 0 0 10px var(--gold), 0 0 18px #E8B84B66;
+      letter-spacing: 0.06em;
+      animation: neonIntro 3.2s ease-out 1 forwards;
+      line-height: 1.1;
+      margin-top: 1.2rem;
+    }
+
+    /* Fires once: bright surge → two quick flickers → settles dim */
+    @keyframes neonIntro {
+      0%   { text-shadow: 0 0 2px #fff2, 0 0 6px var(--gold); opacity: 0.7; }
+      15%  { text-shadow: 0 0 10px #fff, 0 0 24px var(--gold), 0 0 55px var(--gold), 0 0 90px #E8B84Baa; opacity: 1; }
+      30%  { text-shadow: 0 0 3px #fff3, 0 0 8px var(--gold); opacity: 0.75; }
+      38%  { text-shadow: 0 0 10px #fff, 0 0 24px var(--gold), 0 0 55px var(--gold); opacity: 1; }
+      48%  { text-shadow: 0 0 3px #fff3, 0 0 8px var(--gold); opacity: 0.8; }
+      58%  { text-shadow: 0 0 8px #fff, 0 0 20px var(--gold), 0 0 40px var(--gold); opacity: 1; }
+      100% { text-shadow: 0 0 4px #fff4, 0 0 10px var(--gold), 0 0 18px #E8B84B66; opacity: 0.88; }
+    }
+
+    .tagline {
+      font-family: 'Edu AU VIC WA NT Pre', cursive;
+      font-size: clamp(0.9rem, 2.5vw, 1.25rem);
+      color: var(--green-lt);
+      margin-top: 0.4rem;
+      letter-spacing: 0.05em;
+    }
+
+    /* ── BIG DONUT SVG ── */
+    .donut-wrap {
+      margin: 1rem auto 0;
+      width: clamp(160px, 30vw, 260px);
+      position: relative;
+    }
+
+    .donut-wrap svg { width: 100%; height: auto; }
+
+    .donut-wrap svg .glaze { animation: glazeShift 6s ease-in-out infinite alternate; }
+    @keyframes glazeShift {
+      0%   { fill: #E8B84B; }
+      50%  { fill: #d4a83a; }
+      100% { fill: #f0cb6e; }
+    }
+
+    /* rotating sprinkles */
+    .donut-wrap svg .sprinkle-group {
+      transform-origin: 130px 130px;
+      animation: spin 30s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── MAIN LAYOUT ── */
+    main {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0.5rem 1.2rem 4rem;
+    }
+
+    /* ── SECTION HEADERS (chalkboard style) ── */
+    .board-header {
+      font-family: 'Righteous', sans-serif;
+      font-size: clamp(1.4rem, 4vw, 2rem);
+      color: var(--cream);
+      border-left: 6px solid var(--gold);
+      padding-left: 0.8rem;
+      margin: 1.2rem 0 1.4rem;
+      text-shadow: 2px 2px 0 var(--chocolate);
+    }
+
+    /* ── ABOUT BOX ── */
+    .about-box {
+      background: rgba(62, 125, 68, 0.18);
+      border: 2px solid var(--green-md);
+      border-radius: 2px;
+      padding: 1.4rem 1.8rem;
+      line-height: 1.75;
+      font-size: 0.97rem;
+      position: relative;
+    }
+
+    .about-box::before {
+      content: '🌿';
+      position: absolute; top: -14px; left: 18px;
+      font-size: 1.4rem;
+    }
+
+    .about-box p + p { margin-top: 0.9rem; }
+
+    .about-box strong {
+      color: var(--gold);
+      font-weight: 700;
+    }
+
+    .pill {
+      display: inline-block;
+      background: var(--green-md);
+      color: var(--cream);
+      font-size: 0.75rem;
+      padding: 0.15rem 0.55rem;
+      border-radius: 999px;
+      margin: 0.15rem 0.1rem;
+      vertical-align: middle;
+    }
+
+    /* ── BROWSER AI INDICATOR ── */
+    .ai-banner {
+      display: flex; align-items: center; gap: 0.8rem;
+      background: rgba(200, 168, 58, 0.12);
+      border: 1px solid var(--gold);
+      padding: 0.7rem 1.1rem;
+      margin: 2rem 0;
+      font-size: 0.88rem;
+      line-height: 1.5;
+    }
+
+    .ai-dot {
+      width: 12px; height: 12px;
+      border-radius: 50%;
+      background: #888;
+      flex-shrink: 0;
+      transition: background 0.4s;
+    }
+    .ai-dot.supported  { background: var(--green-lt); box-shadow: 0 0 6px var(--green-lt); }
+    .ai-dot.unsupported { background: var(--red); }
+
+    /* ── PROJECT CARDS (menu board) ── */
+    .menu-board {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1.2rem;
+    }
+
+    .menu-card {
+      background: #0e2710;
+      border: 2px solid var(--green-md);
+      border-top: 4px solid var(--gold);
+      padding: 1.2rem 1.2rem 1rem;
+      position: relative;
+      transition: transform 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+      color: inherit;
+      display: flex; flex-direction: column; gap: 0.5rem;
+    }
+
+    .menu-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.45);
+      border-color: var(--gold);
+    }
+
+    .menu-card .flavor {
+      font-family: 'Righteous', sans-serif;
+      font-size: 1.05rem;
+      color: var(--gold);
+    }
+
+    .menu-card .desc {
+      font-size: 0.84rem;
+      color: #c8d8b8;
+      line-height: 1.6;
+      flex: 1;
+    }
+
+    .menu-card .tags { margin-top: 0.4rem; }
+
+    .menu-card .status {
+      position: absolute; top: 0.6rem; right: 0.8rem;
+      font-size: 0.68rem;
+      font-family: 'Courier Prime', monospace;
+      color: var(--green-lt);
+      opacity: 0.8;
+    }
+
+    /* fresh batch badge */
+    .badge-fresh {
+      display: inline-block;
+      background: var(--red);
+      color: #fff;
+      font-size: 0.62rem;
+      font-family: 'Righteous', sans-serif;
+      letter-spacing: 0.1em;
+      padding: 0.1rem 0.45rem;
+      margin-left: 0.4rem;
+      vertical-align: middle;
+      text-transform: uppercase;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--chocolate);
+      color: #c8b090;
+      text-align: center;
+      font-size: 0.8rem;
+      padding: 1.4rem 1rem;
+      line-height: 1.9;
+      border-top: 3px solid var(--caramel);
+    }
+
+    footer a { color: var(--gold); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+
+    /* ── SCROLL REVEAL ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: none;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Vine topbar -->
+<div class="vine-bar">
+  <span>🌿</span><span>🍩</span><span>🌱</span><span>☀️</span>
+  <span>open tools for community health</span>
+  <span>☀️</span><span>🌱</span><span>🍩</span><span>🌿</span>
+</div>
+
+<header>
+  <div class="neon-sign">GLOBAL DONUT</div>
+  <div class="demo-banner">🚧 demo mode &nbsp;·&nbsp; placeholder text &nbsp;·&nbsp; not fully baked 🚧</div>
+  <div class="tagline">software experiments for community mental health &amp; social network health</div>
+
+  <!-- Donut SVG -->
+  <div class="donut-wrap">
+    <svg viewBox="0 0 260 260" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <!-- shadow -->
+      <ellipse cx="130" cy="220" rx="90" ry="14" fill="#000" opacity="0.25"/>
+      <!-- dough body -->
+      <circle cx="130" cy="128" r="100" fill="#C17B2A"/>
+      <!-- glaze -->
+      <circle cx="130" cy="124" r="96" class="glaze" fill="#E8B84B"/>
+      <!-- glaze drips -->
+      <ellipse cx="94" cy="172" rx="10" ry="16" fill="#E8B84B" transform="rotate(-20 94 172)" opacity="0.85"/>
+      <ellipse cx="168" cy="175" rx="8" ry="13" fill="#E8B84B" transform="rotate(15 168 175)" opacity="0.8"/>
+      <ellipse cx="148" cy="50" rx="7" ry="10" fill="#E8B84B" transform="rotate(-5 148 50)" opacity="0.7"/>
+      <!-- hole -->
+      <circle cx="130" cy="128" r="40" fill="#1F4020"/>
+      <!-- dough ring inner shadow -->
+      <circle cx="130" cy="128" r="44" fill="none" stroke="#5C2C0A" stroke-width="5" opacity="0.4"/>
+      <!-- outer shadow ring -->
+      <circle cx="130" cy="128" r="100" fill="none" stroke="#5C2C0A" stroke-width="4" opacity="0.3"/>
+      <!-- sprinkles -->
+      <g class="sprinkle-group">
+        <!-- green / red / yellow -->
+        <rect x="90"  y="62"  width="16" height="5" rx="2.5" fill="#3A7D44"  transform="rotate(-30  98  65)"/>
+        <rect x="155" y="75"  width="14" height="5" rx="2.5" fill="#C63D2F"  transform="rotate(20 162  77)"/>
+        <rect x="170" y="140" width="15" height="5" rx="2.5" fill="#7DBF6E"  transform="rotate(50 178 142)"/>
+        <rect x="75"  y="155" width="14" height="5" rx="2.5" fill="#E8B84B"  transform="rotate(-50  82 158)"/>
+        <rect x="108" y="195" width="16" height="5" rx="2.5" fill="#3A7D44"  transform="rotate(10 116 197)"/>
+        <rect x="148" y="198" width="13" height="5" rx="2.5" fill="#C63D2F"  transform="rotate(-15 155 200)"/>
+        <rect x="56"  y="108" width="14" height="5" rx="2.5" fill="#7DBF6E"  transform="rotate(35  63 110)"/>
+        <rect x="190" y="100" width="15" height="5" rx="2.5" fill="#E8B84B"  transform="rotate(-20 198 102)"/>
+        <!-- pink -->
+        <rect x="118" y="55"  width="15" height="5" rx="2.5" fill="#F472B6"  transform="rotate(12 125 57)"/>
+        <rect x="62"  y="138" width="14" height="5" rx="2.5" fill="#F472B6"  transform="rotate(-40 69 140)"/>
+        <rect x="164" y="192" width="15" height="5" rx="2.5" fill="#EC4899"  transform="rotate(25 171 194)"/>
+        <rect x="195" y="130" width="13" height="5" rx="2.5" fill="#F472B6"  transform="rotate(-10 201 132)"/>
+        <!-- sky blue -->
+        <rect x="140" y="55"  width="14" height="5" rx="2.5" fill="#38BDF8"  transform="rotate(-18 147 57)"/>
+        <rect x="198" y="158" width="15" height="5" rx="2.5" fill="#0EA5E9"  transform="rotate(42 205 160)"/>
+        <rect x="72"  y="178" width="14" height="5" rx="2.5" fill="#38BDF8"  transform="rotate(-22 79 180)"/>
+        <rect x="52"  y="82"  width="13" height="5" rx="2.5" fill="#0EA5E9"  transform="rotate(55 59 84)"/>
+        <!-- purple -->
+        <rect x="178" y="78"  width="15" height="5" rx="2.5" fill="#A855F7"  transform="rotate(-35 185 80)"/>
+        <rect x="88"  y="200" width="14" height="5" rx="2.5" fill="#C084FC"  transform="rotate(18 95 202)"/>
+        <rect x="178" y="118" width="13" height="5" rx="2.5" fill="#A855F7"  transform="rotate(60 185 120)"/>
+        <!-- orange -->
+        <rect x="104" y="65"  width="14" height="5" rx="2.5" fill="#FB923C"  transform="rotate(-25 111 67)"/>
+        <rect x="58"  y="160" width="15" height="5" rx="2.5" fill="#F97316"  transform="rotate(30 65 162)"/>
+        <rect x="175" y="55"  width="13" height="5" rx="2.5" fill="#FB923C"  transform="rotate(-8 182 57)"/>
+        <!-- white -->
+        <rect x="165" y="165" width="14" height="5" rx="2.5" fill="#FFF8F0"  transform="rotate(-45 172 167)"/>
+        <rect x="82"  y="68"  width="13" height="5" rx="2.5" fill="#FFF8F0"  transform="rotate(22 89 70)"/>
+        <!-- dots original -->
+        <circle cx="130" cy="58"  r="4"   fill="#C63D2F"/>
+        <circle cx="78"  cy="90"  r="3.5" fill="#7DBF6E"/>
+        <circle cx="182" cy="168" r="4"   fill="#3A7D44"/>
+        <circle cx="96"  cy="186" r="3"   fill="#E8B84B"/>
+        <!-- dots new colors -->
+        <circle cx="152" cy="62"  r="3.5" fill="#F472B6"/>
+        <circle cx="60"  cy="125" r="3"   fill="#38BDF8"/>
+        <circle cx="200" cy="112" r="3.5" fill="#A855F7"/>
+        <circle cx="115" cy="205" r="3"   fill="#FB923C"/>
+        <circle cx="185" cy="145" r="3"   fill="#FFF8F0"/>
+        <circle cx="66"  cy="170" r="3.5" fill="#EC4899"/>
+        <circle cx="145" cy="52"  r="3"   fill="#0EA5E9"/>
+        <circle cx="178" cy="95"  r="3"   fill="#C084FC"/>
+      </g>
+      <!-- shine -->
+      <ellipse cx="100" cy="90" rx="22" ry="14" fill="#fff" opacity="0.12" transform="rotate(-30 100 90)"/>
+    </svg>
+  </div>
+
+</header>
+
+<main>
+
+  <!-- ABOUT -->
+  <section class="reveal">
+    <h2 class="board-header">What's Cooking</h2>
+    <div class="about-box">
+      <p>
+        <strong>Global Donut</strong> is a gallery of open-source software experiments
+        at the intersection of <strong>social network health</strong> and community mental wellbeing —
+        built by and for the <strong>decentralized web development community</strong>.
+      </p>
+      <p>
+        These tools are shaped by real-world use, released the moment they're useful,
+        and totally free to take, fork, or ignore. Some will change your life.
+        Some might only work for one person on the planet. That's fine.
+      </p>
+      <p>
+        Current experiments involve
+        <span class="pill">🪟 window.ai</span>
+        <span class="pill">🌐 Chrome Origin Trials</span>
+        <span class="pill">🔗 local-first PWAs</span>
+        <span class="pill">🕸️ social graph tools</span> —
+        all aimed at giving communities better software mirrors of their own health.
+      </p>
+    </div>
+  </section>
+
+  <!-- BROWSER AI INDICATOR -->
+  <div class="ai-banner reveal">
+    <div class="ai-dot" id="aiDot"></div>
+    <div id="aiStatus">Checking your browser for local AI support (window.ai / Chrome Origin Trials)…</div>
+  </div>
+
+  <!-- PROJECTS -->
+  <section class="reveal">
+    <h2 class="board-header">Today's Menu — GitHub Projects</h2>
+
+    <div class="menu-board" id="projectGrid">
+
+      <a class="menu-card" href="https://github.com/" target="_blank" rel="noopener">
+        <span class="status">🟢 active</span>
+        <div class="flavor">keeptrack.nz <span class="badge-fresh">fresh</span></div>
+        <div class="desc">Local-first personal tracking tools for community wellbeing. Yours stays yours — runs offline, no account needed.</div>
+        <div class="tags">
+          <span class="pill">PWA</span>
+          <span class="pill">local-first</span>
+          <span class="pill">mental health</span>
+        </div>
+      </a>
+
+      <a class="menu-card" href="https://github.com/" target="_blank" rel="noopener">
+        <span class="status">🟡 experimental</span>
+        <div class="flavor">socialnetwork.health</div>
+        <div class="desc">A public knowledge base and tool suite for social network health approaches to community care. Open to all forks.</div>
+        <div class="tags">
+          <span class="pill">SNH</span>
+          <span class="pill">community</span>
+          <span class="pill">open data</span>
+        </div>
+      </a>
+
+      <a class="menu-card" href="https://github.com/" target="_blank" rel="noopener">
+        <span class="status">🔵 prototype</span>
+        <div class="flavor">window.ai PWA Launcher</div>
+        <div class="desc">Helps you obtain and run browser-native AI progressive web apps using your own local model infrastructure. No cloud required.</div>
+        <div class="tags">
+          <span class="pill">window.ai</span>
+          <span class="pill">PWA</span>
+          <span class="pill">local AI</span>
+        </div>
+      </a>
+
+      <a class="menu-card" href="https://github.com/" target="_blank" rel="noopener">
+        <span class="status">🟡 experimental</span>
+        <div class="flavor">Community Relationship Tool</div>
+        <div class="desc">Map and tend the social fabric of your community. Relationship-aware, privacy-respecting, runs on your machine.</div>
+        <div class="tags">
+          <span class="pill">CRT</span>
+          <span class="pill">graph</span>
+          <span class="pill">decentralized</span>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- PHILOSOPHY -->
+  <section class="reveal" style="margin-top:3rem;">
+    <h2 class="board-header">House Philosophy</h2>
+    <div class="about-box">
+      <p>🌞 <strong>Ship first.</strong> A working thing in someone's hands beats a perfect thing in a drawer.</p>
+      <p>🌱 <strong>Give it away.</strong> We build to share, not to capture. If it helps one person, it's worth it.</p>
+      <p>🍩 <strong>Embrace the hole.</strong> Social network health is as much about what's missing as what's there. Gaps are data.</p>
+      <p>🔗 <strong>Decentralized by default.</strong> Your community's data belongs to your community.</p>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div>🌿 grown on <a href="https://globaldonut.com">globaldonut.com</a> &nbsp;·&nbsp;
+       all projects <a href="https://github.com/" target="_blank">open source on GitHub</a> 🌿</div>
+  <div style="margin-top:0.4rem; opacity:0.6; font-size:0.75rem;">
+    fresh batches shipped whenever they're ready &nbsp;·&nbsp; no sprinkles were harmed
+  </div>
+</footer>
+
+<script>
+  // Scroll reveal
+  const revealEls = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  revealEls.forEach(el => observer.observe(el));
+
+  // window.ai detection
+  const dot    = document.getElementById('aiDot');
+  const status = document.getElementById('aiStatus');
+  (async () => {
+    if ('ai' in window && window.ai?.canCreateTextSession) {
+      try {
+        const cap = await window.ai.canCreateTextSession();
+        if (cap !== 'no') {
+          dot.classList.add('supported');
+          status.textContent = '✅ Your browser supports window.ai — local AI apps on this site will work natively.';
+          return;
+        }
+      } catch(e) {}
+    }
+    dot.classList.add('unsupported');
+    status.innerHTML = '⚪ Your browser does not yet support <strong>window.ai</strong>. Try Chrome with an <a href="https://developer.chrome.com/docs/ai/built-in" target="_blank" rel="noopener" style="color:var(--gold)">Origin Trial token</a> to enable local AI features.';
+  })();
+</script>
+
+</body>
+</html>
